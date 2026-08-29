@@ -1,26 +1,299 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "../styles/tokens.css";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-accent: var(--accent);
+  --color-cyan: var(--cyan);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body), "Noto Sans SC", "Noto Sans KR", "Noto Sans JP",
+    system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+a.underline {
+  text-decoration: underline;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--fg);
+}
+
+.bg-arena {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(59, 130, 246, 0.22), transparent 55%),
+    radial-gradient(900px 500px at 90% 0%, rgba(6, 182, 212, 0.16), transparent 50%),
+    linear-gradient(180deg, #0b0f19 0%, #0a101c 45%, #070b14 100%);
+}
+
+/* Site nav: beat inherited muted color; active / hover / focus → white. */
+.site-nav-link {
+  color: var(--fg-muted);
+  transition: color 160ms ease;
+}
+
+.site-nav-link:hover,
+.site-nav-link:focus-visible,
+.site-nav-link[aria-current="page"] {
+  color: #ffffff;
+}
+
+.site-nav-link:focus-visible {
+  outline: none;
+}
+
+.grid-fade {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.35), 0 12px 40px rgba(59, 130, 246, 0.18);
+}
+
+.btn-primary:hover {
+  background: #4f8ff7;
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--fg);
+}
+
+.btn-ghost:hover {
+  border-color: rgba(6, 182, 212, 0.55);
+  box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.15);
+}
+
+.panel {
+  background: color-mix(in srgb, var(--bg-panel) 88%, transparent);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+}
+
+.field {
+  width: 100%;
+  background: #0a1220;
+  border: 1px solid var(--line);
+  color: var(--fg);
+  padding: 0.65rem 0.8rem;
+  font: inherit;
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--fg-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.toggle {
+  position: relative;
+  display: inline-flex;
+  width: 2.75rem;
+  height: 1.55rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #0a1220;
+  padding: 0;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.toggle-on {
+  background: color-mix(in srgb, var(--cyan) 32%, #0a1220);
+  border-color: rgba(6, 182, 212, 0.55);
+}
+
+.toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 999px;
+  background: #e2e8f0;
+  transition: transform 160ms ease;
+}
+
+.toggle-on .toggle-knob {
+  transform: translateX(1.15rem);
+}
+
+@keyframes pulse-line {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.anim-rise {
+  animation: rise-in 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.anim-rise-delay {
+  animation: rise-in 800ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms both;
+}
+
+.anim-pulse {
+  animation: pulse-line 2.8s ease-in-out infinite;
+}
+
+@keyframes idle-warn-flash {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+/** Human turn idle too long — flash name / Human label. */
+.anim-idle-warn {
+  animation: idle-warn-flash 0.9s ease-in-out infinite;
+  color: var(--accent) !important;
+}
+
+.board-cell {
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.last-from {
+  box-shadow: inset 0 0 0 2px rgba(59, 130, 246, 0.45);
+  background-color: rgba(59, 130, 246, 0.18) !important;
+}
+
+.last-to {
+  box-shadow: inset 0 0 0 2px rgba(6, 182, 212, 0.85);
+  background-color: rgba(6, 182, 212, 0.28) !important;
+}
+
+/* Capture landing square: bright border flashes twice, then stays on. */
+@keyframes capture-flash {
+  0%,
+  100% {
+    box-shadow: inset 0 0 0 2px rgba(6, 182, 212, 0.95);
+    background-color: rgba(6, 182, 212, 0.38) !important;
+  }
+  14%,
+  42%,
+  70% {
+    box-shadow: inset 0 0 0 2px rgba(6, 182, 212, 0.12);
+    background-color: rgba(6, 182, 212, 0.06) !important;
+  }
+  28%,
+  56%,
+  84% {
+    box-shadow: inset 0 0 0 2px rgba(6, 182, 212, 1);
+    background-color: rgba(6, 182, 212, 0.48) !important;
+  }
+}
+
+.last-to-capture {
+  animation: capture-flash 1.2s ease-in-out 1;
+}
+
+/* Human king in check: red border flashes three times. */
+@keyframes king-check-flash {
+  0%,
+  100% {
+    box-shadow: inset 0 0 0 2px rgba(248, 113, 113, 0.15);
+    background-color: rgba(248, 113, 113, 0.06) !important;
+  }
+  11%,
+  44%,
+  77% {
+    box-shadow: inset 0 0 0 2px rgba(248, 113, 113, 1);
+    background-color: rgba(248, 113, 113, 0.48) !important;
+  }
+  22%,
+  55%,
+  88% {
+    box-shadow: inset 0 0 0 2px rgba(248, 113, 113, 0.12);
+    background-color: rgba(248, 113, 113, 0.06) !important;
+  }
+}
+
+.king-in-check {
+  animation: king-check-flash 3s ease-in-out 1;
 }
