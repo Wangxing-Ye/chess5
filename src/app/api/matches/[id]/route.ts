@@ -201,6 +201,10 @@ export async function PATCH(req: Request, ctx: Ctx) {
     }
 
     if (body.action === "llm_result") {
+      // Late model replies after End Match / terminal — acknowledge without error.
+      if (match.status !== "playing") {
+        return NextResponse.json({ match: toClientMatch(match) });
+      }
       const side = body.side ?? match.state.turn;
       const raw = clip(body.raw ?? "");
       if (body.error || !body.parsedMove) {
@@ -268,12 +272,32 @@ export async function PATCH(req: Request, ctx: Ctx) {
           reasoningLevel: match.reasoningLevel,
         });
       }
-      return NextResponse.json({
-        match: toClientMatch(applyPlayerMove(match, parsed)),
-      });
+      try {
+        return NextResponse.json({
+          match: toClientMatch(applyPlayerMove(match, parsed)),
+        });
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : "apply failed";
+        // Concurrent End Match / terminal finished the match mid-request.
+        if (match.status !== "playing" || msg === "Match is not playing") {
+          return NextResponse.json({ match: toClientMatch(match) });
+        }
+        // Parsed coordinates that are illegal to play — count as a strike.
+        return NextResponse.json({
+          match: toClientMatch(
+            registerIllegal(match, side, raw || clip(body.parsedMove), msg, {
+              provider: body.provider,
+              model: body.model,
+            }),
+          ),
+        });
+      }
     }
 
     if (body.action === "move" || body.action === "pass") {
+      if (match.status !== "playing") {
+        return NextResponse.json({ match: toClientMatch(match) });
+      }
       if (!body.move && body.action !== "pass") {
         return NextResponse.json({ error: "move required" }, { status: 400 });
       }

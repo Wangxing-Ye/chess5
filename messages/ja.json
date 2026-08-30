@@ -62,7 +62,7 @@
     "humanFixed": "人間",
     "model": "モデル",
     "provider": "プロバイダー",
-    "providerWithCount": "プロバイダー（{count}）",
+    "providerWithCount": "プロバイダー（<n>{count}</n>）",
     "modelId": "モデル",
     "autoplay": "自動対局",
     "runAuto": "自動実行",

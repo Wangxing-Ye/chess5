@@ -62,7 +62,7 @@
     "humanFixed": "人類",
     "model": "模型",
     "provider": "服務商",
-    "providerWithCount": "服務商（{count}）",
+    "providerWithCount": "服務商（<n>{count}</n>）",
     "modelId": "模型",
     "autoplay": "自動對局",
     "runAuto": "自動運行",

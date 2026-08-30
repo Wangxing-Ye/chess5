@@ -62,7 +62,7 @@
     "humanFixed": "인간",
     "model": "모델",
     "provider": "제공사",
-    "providerWithCount": "제공사 ({count})",
+    "providerWithCount": "제공사 (<n>{count}</n>)",
     "modelId": "모델",
     "autoplay": "자동 대국",
     "runAuto": "자동 실행",

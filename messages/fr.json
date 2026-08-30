@@ -62,7 +62,7 @@
     "humanFixed": "Humain",
     "model": "Modèle",
     "provider": "Fournisseur",
-    "providerWithCount": "Fournisseur ({count})",
+    "providerWithCount": "Fournisseur (<n>{count}</n>)",
     "modelId": "Modèle",
     "autoplay": "Lecture auto",
     "runAuto": "Exécuter automatiquement",

@@ -162,6 +162,8 @@ LLM proxy failures return **HTTP 502** with a JSON `code` so the Play UI can cho
 
 ## Develop
 
+Requires **Node.js 22+** (`better-sqlite3`).
+
 ```bash
 npm install
 npm run dev

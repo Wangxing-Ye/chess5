@@ -166,7 +166,12 @@ function ModelFields({
     <div className="mt-3 grid gap-3 sm:grid-cols-2">
       <div>
         <label className="label">
-          {t("providerWithCount", { count: providers.length })}
+          {t.rich("providerWithCount", {
+            count: providers.length,
+            n: (chunks) => (
+              <span className="text-[var(--fg)]">{chunks}</span>
+            ),
+          })}
         </label>
         <select
           className="field"

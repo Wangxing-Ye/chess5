@@ -62,7 +62,7 @@
     "humanFixed": "Human",
     "model": "Model",
     "provider": "Provider",
-    "providerWithCount": "Provider ({count})",
+    "providerWithCount": "Provider (<n>{count}</n>)",
     "modelId": "Model",
     "autoplay": "Auto-play",
     "runAuto": "Run automatically",

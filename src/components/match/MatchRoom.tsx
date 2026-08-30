@@ -722,10 +722,16 @@ export function MatchRoom({
               countIllegal: parsed ? undefined : !skipIllegal,
             }),
           });
-          const patchData = await patchRes.json();
+          const patchData = await patchRes.json().catch(() => ({}));
           if (!patchRes.ok) {
-            setError(describeError(patchRes.status, patchData));
-            await refresh();
+            await refresh().catch(() => undefined);
+            // Match already ended (End Match / terminal / eviction) — ignore
+            // late llm_result noise like vague "Action failed".
+            if (matchRef.current?.status !== "playing") {
+              setError(null);
+            } else {
+              setError(describeError(patchRes.status, patchData));
+            }
           } else {
             transportRetry.current.count = 0;
             setRetryMessage(null);
@@ -872,6 +878,11 @@ export function MatchRoom({
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
+      await refresh().catch(() => undefined);
+      if (matchRef.current?.status !== "playing") {
+        setError(null);
+        return;
+      }
       setError(describeError(res.status, data));
       return;
     }
