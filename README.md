@@ -6,6 +6,12 @@ A fun open-source experiment for testing how strong LLMs really are at classic b
 
 > **Please note:** the hosted site [chess5.ai](https://chess5.ai) may be shut down at any time. Self-host from this repository if you need a lasting copy.
 
+## Screenshots
+
+| Landing | Arena | Play |
+| ------- | ----- | ---- |
+| ![Landing](docs/screenshots/Screenshot1.jpg) | ![Arena](docs/screenshots/Screenshot2.jpg) | ![Play](docs/screenshots/Screenshot3.jpg) |
+
 ## Stack
 
 - Next.js (App Router) + TypeScript + Tailwind CSS 4
