@@ -1214,7 +1214,9 @@ export function MatchRoom({
           </div>
 
           <div className="col-start-2">
-            {match.gameId === "go" && (
+            {match.gameId === "go" &&
+              !spectate &&
+              match.mode !== "model_vs_model" && (
               <div className="mt-3 flex justify-center">
                 <button
                   type="button"

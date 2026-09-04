@@ -35,7 +35,8 @@ export function reasoningIsOn(level: ReasoningLevel): boolean {
 
 /**
  * True when Arena Off can map to a real disable / none / thinking-off knob.
- * Meta, xAI, Moonshot, Gemini, Fable, MiniMax M2, Mistral, GLM-5.3 cannot fully turn off.
+ * Meta, xAI, Moonshot, Gemini, Fable, MiniMax M2, Mistral, GLM-5.3,
+ * GPT-6 Astra cannot fully turn off.
  */
 export function supportsReasoningOff(
   providerId: ProviderId,
@@ -43,6 +44,8 @@ export function supportsReasoningOff(
 ): boolean {
   switch (providerId) {
     case "openai":
+      // GPT-6 Astra rejects reasoning_effort none; Off is not available.
+      return !openaiAlwaysThinking(model);
     case "deepseek":
     case "alibaba":
       return true;
@@ -69,6 +72,11 @@ export function supportsReasoningOff(
 /** Zhipu GLM-5.3 rejects thinking.disabled; effort must be low | high | max. */
 function zhipuAlwaysThinking(model: string): boolean {
   return /glm-5\.3/i.test(model);
+}
+
+/** OpenAI GPT-6 Astra cannot set reasoning_effort to none. */
+function openaiAlwaysThinking(model: string): boolean {
+  return /gpt-6-astra/i.test(model);
 }
 
 /** GLM-5.2+ accept reasoning_effort low | high | max when thinking is on. */
@@ -123,6 +131,12 @@ export function applyOpenAiStyleReasoning(
 
   switch (providerId) {
     case "openai": {
+      // Astra cannot disable; Off → low (Arena hides Astra when Off).
+      if (openaiAlwaysThinking(model) && level === "off") {
+        body.reasoning_effort = "low";
+        body.max_completion_tokens = alwaysOnOffBudget();
+        break;
+      }
       body.reasoning_effort =
         level === "off"
           ? "none"

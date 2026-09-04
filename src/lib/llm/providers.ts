@@ -27,7 +27,7 @@ export const PROVIDERS: ProviderConfig[] = [
     id: "openai",
     name: "OpenAI",
     defaultModel: "gpt-5.6-terra",
-    models: ["gpt-5.6-terra", "gpt-5.6-sol", "gpt-5.6-luna"],
+    models: ["gpt-6-astra", "gpt-5.6-terra", "gpt-5.6-sol", "gpt-5.6-luna"],
     baseUrl: "https://api.openai.com/v1",
     style: "openai",
     keysUrl: "https://platform.openai.com/api-keys",
