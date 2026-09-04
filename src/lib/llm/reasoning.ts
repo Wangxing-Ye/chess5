@@ -301,15 +301,23 @@ export function applyAnthropicReasoning(
   body.output_config = { effort };
 }
 
+/** Gemini 3.8+ rejects thinkingLevel MINIMAL; Off falls back to LOW. */
+function geminiSupportsMinimalThinking(model: string): boolean {
+  return !/gemini-3\.8/i.test(model);
+}
+
 /** Google Gemini generateContent knobs. */
 export function applyGeminiReasoning(
   generationConfig: Record<string, unknown>,
   level: ReasoningLevel,
+  model: string,
 ): void {
-  // Cannot disable; Off → minimal.
+  // Cannot disable; Off → MINIMAL when supported, else LOW.
   const thinkingLevel =
     level === "off"
-      ? "MINIMAL"
+      ? geminiSupportsMinimalThinking(model)
+        ? "MINIMAL"
+        : "LOW"
       : level === "low"
         ? "LOW"
         : level === "medium"

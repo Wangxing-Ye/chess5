@@ -229,7 +229,7 @@ export async function completeLLM(req: CompleteRequest): Promise<CompleteRespons
   }
 
   const generationConfig: Record<string, unknown> = {};
-  applyGeminiReasoning(generationConfig, level);
+  applyGeminiReasoning(generationConfig, level, req.model);
 
   const url = `${provider.baseUrl}/models/${req.model}:generateContent`;
   const res = await fetch(url, {

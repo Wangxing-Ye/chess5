@@ -35,8 +35,13 @@ export const PROVIDERS: ProviderConfig[] = [
   {
     id: "anthropic",
     name: "Anthropic",
-    defaultModel: "claude-fable-5",
-    models: ["claude-fable-5", "claude-opus-5", "claude-sonnet-5"],
+    defaultModel: "claude-fable-5-1",
+    models: [
+      "claude-fable-5-1",
+      "claude-fable-5",
+      "claude-opus-5",
+      "claude-sonnet-5",
+    ],
     baseUrl: "https://api.anthropic.com/v1",
     style: "anthropic",
     keysUrl: "https://console.anthropic.com/settings/keys",
@@ -44,8 +49,9 @@ export const PROVIDERS: ProviderConfig[] = [
   {
     id: "google",
     name: "Google",
-    defaultModel: "gemini-3.6-flash",
+    defaultModel: "gemini-3.8-flash",
     models: [
+      "gemini-3.8-flash",
       "gemini-3.6-flash",
       "gemini-3.5-flash",
       "gemini-3.5-flash-lite",
